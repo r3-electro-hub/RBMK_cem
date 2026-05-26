@@ -44,9 +44,11 @@ alto_aire = alto_sistema + 2 * margen_aire;
 
 %% Parámetros del Barrido Paramétrico
 
-distancias_prueba = [20, 40, 50, 80, 100];
-
-N_pruebas = length(distancias_prueba);
+%distancias_prueba = [20, 40, 50, 80, 100];
+distancias_prueba = 50;
+voltajes_prueba = [10,20,50,100,200,300]
+%N_pruebas = length(distancias_prueba);
+N_pruebas = length(voltajes_prueba);
 
 campo_maximo = zeros(1, N_pruebas);
 
@@ -56,7 +58,7 @@ factor_seguridad = zeros(1, N_pruebas);
 
 
 E_ruptura = 30.0e6;
-V_aplicado = 300;
+%V_aplicado = 300;
 
 e0 = 8.854187817e-12;
 
@@ -66,8 +68,9 @@ eps_efectiva = 80;
 %% Solver Loop
 
 for i = 1:N_pruebas
-    d_actual = distancias_prueba(i);
-
+    d_actual = distancias_prueba;
+    %d_actual = distancias_prueba(i);
+    voltaje_actual = voltajes_prueba(i);
     ancho_electrodo2 = ancho_aislante - d_actual;
 
 
@@ -141,7 +144,7 @@ for i = 1:N_pruebas
     ei_addmaterial('Aire', 1, 1, 0);
 
 
-    ei_addconductorprop('V_Arriba', V_aplicado, 0, 1);
+    ei_addconductorprop('V_Arriba', voltaje_actual, 0, 1);
 
     ei_addconductorprop('V_Abajo_Izq', 0, 0, 1);
 
@@ -300,7 +303,7 @@ for i = 1:N_pruebas
     % Extracción de Capacitancia Real desde las propiedades del Conductor Superior
     res_circ = eo_getconductorproperties('V_Arriba');
     Q_real = res_circ(2); % Carga real calculada por FEMM (Coulombs)
-    capacitancia(i) = (abs(Q_real) / 100) * 1e12; % C = Q/V convertido a pF
+    capacitancia(i) = (abs(Q_real) / voltaje_actual) * 1e12; % C = Q/V convertido a pF
 
     % Factor de Seguridad real frente a la ruptura
     if ~isnan(campo_maximo(i)) && campo_maximo(i) > 0
@@ -322,27 +325,27 @@ fontSizeTicks = 12;
 
 %% GRÁFICA 1: Capacitancia
 figure('Name', 'Efecto en la Capacitancia', 'NumberTitle', 'off', 'Color', 'w');
-plot(distancias_prueba, capacitancia, 'o-', 'LineWidth', 3, 'Color', 'b', 'MarkerSize', 10, 'MarkerFaceColor', 'b');
+plot(voltajes_prueba, capacitancia, 'o-', 'LineWidth', 3, 'Color', 'b', 'MarkerSize', 10, 'MarkerFaceColor', 'b');
 title('Efecto de la Distancia entre Electrodos en la Capacitancia', 'FontSize', fontSizeTitulos, 'FontWeight', 'bold');
-xlabel('Distancia d (\mu m)', 'FontSize', fontSizeEjes);
+xlabel('Voltaje V', 'FontSize', fontSizeEjes);
 ylabel('Capacitancia (pF)', 'FontSize', fontSizeEjes);
 set(gca, 'FontSize', fontSizeTicks, 'LineWidth', 1.5); % Agranda los números de los ejes
 grid on;
 
 %% GRÁFICA 2: Campo Eléctrico Máximo
 figure('Name', 'Campo Eléctrico Máximo', 'NumberTitle', 'off', 'Color', 'w');
-plot(distancias_prueba, campo_maximo, 's-', 'LineWidth', 3, 'Color', 'r', 'MarkerSize', 10, 'MarkerFaceColor', 'r');
+plot(voltajes_prueba, campo_maximo, 's-', 'LineWidth', 3, 'Color', 'r', 'MarkerSize', 10, 'MarkerFaceColor', 'r');
 title('Campo Eléctrico Máximo en la Región Crítica Inferior', 'FontSize', fontSizeTitulos, 'FontWeight', 'bold');
-xlabel('Distancia d (\mu m)', 'FontSize', fontSizeEjes);
+xlabel('Voltaje V', 'FontSize', fontSizeEjes);
 ylabel('Campo Máximo E (V/m)', 'FontSize', fontSizeEjes);
 set(gca, 'FontSize', fontSizeTicks, 'LineWidth', 1.5); % Agranda los números de los ejes
 grid on;
 
 %% GRÁFICA 3: Factor de Seguridad
 figure('Name', 'Factor de Seguridad', 'NumberTitle', 'off', 'Color', 'w');
-plot(distancias_prueba, factor_seguridad, 'd-', 'LineWidth', 3, 'Color', 'g', 'MarkerSize', 10, 'MarkerFaceColor', 'g');
+plot(voltajes_prueba, factor_seguridad, 'd-', 'LineWidth', 3, 'Color', 'g', 'MarkerSize', 10, 'MarkerFaceColor', 'g');
 title('Factor de Seguridad frente a Ruptura Dieléctrica', 'FontSize', fontSizeTitulos, 'FontWeight', 'bold');
-xlabel('Distancia d (\mu m)', 'FontSize', fontSizeEjes);
+xlabel('Voltaje V', 'FontSize', fontSizeEjes);
 ylabel('Factor de Seguridad (FS)', 'FontSize', fontSizeEjes);
 set(gca, 'FontSize', fontSizeTicks, 'LineWidth', 1.5); % Agranda los números de los ejes
 grid on;
