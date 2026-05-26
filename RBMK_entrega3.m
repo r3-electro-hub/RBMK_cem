@@ -44,7 +44,7 @@ alto_aire = alto_sistema + 2 * margen_aire;
 
 %% Parámetros del Barrido Paramétrico
 
-distancias_prueba = [20, 40, 60, 80, 100];
+distancias_prueba = [20, 40, 50, 80, 100];
 
 N_pruebas = length(distancias_prueba);
 
