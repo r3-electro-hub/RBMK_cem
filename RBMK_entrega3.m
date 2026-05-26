@@ -317,44 +317,34 @@ end
 
 
 %% Visualización de Resultados
+% Tamaño de fuente global para controlar todo fácilmente
+fontSizeTitulos = 16;
+fontSizeEjes = 14;
+fontSizeTicks = 12;
 
-figure('Name', 'Resultados del Análisis Paramétrico', 'NumberTitle', 'off');
-
-
-subplot(3,1,1);
-
-plot(distancias_prueba, capacitancia, 'o-', 'LineWidth', 2, 'Color', 'b');
-
-title('Efecto de la Distancia entre Electrodos en la Capacitancia');
-
-xlabel('Distancia d (\mu m)');
-
-ylabel('Capacitancia (pF)');
-
+%% GRÁFICA 1: Capacitancia
+figure('Name', 'Efecto en la Capacitancia', 'NumberTitle', 'off', 'Color', 'w');
+plot(distancias_prueba, capacitancia, 'o-', 'LineWidth', 3, 'Color', 'b', 'MarkerSize', 10, 'MarkerFaceColor', 'b');
+title('Efecto de la Distancia entre Electrodos en la Capacitancia', 'FontSize', fontSizeTitulos, 'FontWeight', 'bold');
+xlabel('Distancia d (\mu m)', 'FontSize', fontSizeEjes);
+ylabel('Capacitancia (pF)', 'FontSize', fontSizeEjes);
+set(gca, 'FontSize', fontSizeTicks, 'LineWidth', 1.5); % Agranda los números de los ejes
 grid on;
 
-
-subplot(3,1,2);
-
-plot(distancias_prueba, campo_maximo, 's-', 'LineWidth', 2, 'Color', 'r');
-
-title('Campo Eléctrico Máximo en la Región Crítica Inferior');
-
-xlabel('Distancia d (\mu m)');
-
-ylabel('Campo Máximo E (V/m)');
-
+%% GRÁFICA 2: Campo Eléctrico Máximo
+figure('Name', 'Campo Eléctrico Máximo', 'NumberTitle', 'off', 'Color', 'w');
+plot(distancias_prueba, campo_maximo, 's-', 'LineWidth', 3, 'Color', 'r', 'MarkerSize', 10, 'MarkerFaceColor', 'r');
+title('Campo Eléctrico Máximo en la Región Crítica Inferior', 'FontSize', fontSizeTitulos, 'FontWeight', 'bold');
+xlabel('Distancia d (\mu m)', 'FontSize', fontSizeEjes);
+ylabel('Campo Máximo E (V/m)', 'FontSize', fontSizeEjes);
+set(gca, 'FontSize', fontSizeTicks, 'LineWidth', 1.5); % Agranda los números de los ejes
 grid on;
 
-
-subplot(3,1,3);
-
-plot(distancias_prueba, factor_seguridad, 'd-', 'LineWidth', 2, 'Color', 'g');
-
-title('Factor de Seguridad frente a Ruptura Dieléctrica');
-
-xlabel('Distancia d (\mu m)');
-
-ylabel('Factor de Seguridad (FS)');
-
+%% GRÁFICA 3: Factor de Seguridad
+figure('Name', 'Factor de Seguridad', 'NumberTitle', 'off', 'Color', 'w');
+plot(distancias_prueba, factor_seguridad, 'd-', 'LineWidth', 3, 'Color', 'g', 'MarkerSize', 10, 'MarkerFaceColor', 'g');
+title('Factor de Seguridad frente a Ruptura Dieléctrica', 'FontSize', fontSizeTitulos, 'FontWeight', 'bold');
+xlabel('Distancia d (\mu m)', 'FontSize', fontSizeEjes);
+ylabel('Factor de Seguridad (FS)', 'FontSize', fontSizeEjes);
+set(gca, 'FontSize', fontSizeTicks, 'LineWidth', 1.5); % Agranda los números de los ejes
 grid on;
